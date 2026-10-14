@@ -1,0 +1,38 @@
+# Unity gitignore
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+MemoryCaptures/
+
+# Asset meta-files for folders - keep, but ignore temp
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Unity3D generated meta files
+*.pidb
+*.booproj
+*.svd
+*.bak
+*.user
+*.userprefs
+*.unityproj
+*.suo
+*.sln
+*.csproj
+*.unityproj
+*.swp
+*.ds_store
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

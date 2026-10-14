@@ -1,70 +1,79 @@
-# 🎮 Stickman Party Clone (Unity 2D Local Multiplayer)
+# 📱 Stickman Party Clone (Android 2D Local Multiplayer)
 
-Game pesta 1–4 pemain lokal bergaya **Stickman Party** yang dibangun dengan arsitektur Unity (C#) yang modular, ringan, dan siap di-build menggunakan **GitHub Actions**.
+Game pesta 1–4 pemain lokal bergaya **Stickman Party** yang dirancang khusus untuk perangkat **Android (HP / Tablet)** dalam 1 layar bersama, menggunakan arsitektur Unity (C#) dan siap di-build otomatis menjadi file `.apk` via **GitHub Actions**.
+
+---
+
+## 📱 Sistem Kontrol Layar Sentuh 4 Sudut (Multi-Touch di 1 Layar HP/Tablet)
+
+Sama persis seperti game *Stickman Party* aslinya, semua pemain bermain di **1 layar HP atau Tablet yang sama**. Setiap sudut layar memiliki **Virtual Joystick & Tombol Aksi** sesuai warna pemain:
+
+```
+┌───────────────────────────────────────────────┐
+│ [P4 KUNING]                       [P2 BIRU]   │
+│ 🕹️ Joy (Kiri-Atas)            (Kanan-Atas) 🕹️ │
+│ 🔘 Action                     Action 🔘       │
+│                                               │
+│                   ARENA                       │
+│                                               │
+│ 🔘 Action                     Action 🔘       │
+│ 🕹️ Joy (Kiri-Bawah)          (Kanan-Bawah) 🕹️ │
+│ [P1 MERAH]                        [P3 HIJAU]  │
+└───────────────────────────────────────────────┘
+```
+
+* *Catatan Pengujian:* Di Unity Editor (PC), kontrol tetap bisa diuji menggunakan mouse (klik & drag joystick) atau menggunakan tombol keyboard:
+  * P1: `WASD` + `Space`
+  * P2: `Panah` + `Enter`
+  * P3: `IJKL` + `U`
+  * P4: `Numpad 8456` + `Numpad +`
 
 ---
 
 ## 🌟 Fitur Utama
 
-1. **1–4 Pemain Lokal (Single Screen / Single Keyboard)**
-   - Mendukung hingga 4 pemain bermain bersamaan di 1 komputer/layar.
-   - Dilengkapi **Bot AI Cerdas** yang otomatis mengisi slot kosong jika pemain kurang dari 4 (misal: 1 Pemain vs 3 Bot, atau 2 Pemain vs 2 Bot).
-2. **Zero External Assets Dependency (Langsung Jalan)**
-   - Visual karakter stickman dibuat secara prosedural dengan animasi kenyal (*bouncy squash & stretch*), mata ekspresif yang menoleh ke arah gerakan, dan kepalan tinju.
-   - Efek suara arcade disintesis langsung lewat kode C# (*procedural audio*), sehingga tidak memerlukan unduhan file `.mp3` / `.wav` terpisah.
-3. **Sistem Turnamen & Podium Juara**
-   - Mainkan turnamen 5 ronde.
-   - Pemenang setiap mini-game mendapatkan +3 Bintang.
-   - Layar podium juara di akhir permainan lengkap dengan peringkat bintang para pemain.
+1. **1–4 Pemain Lokal + Bot AI Pintar**
+   * Pilih mode 1P, 2P, 3P, atau 4P di layar utama.
+   * Slot pemain yang kosong otomatis diisi oleh **Bot AI** yang lincah (misal: Anda sendiri melawan 3 Bot).
+2. **Zero External Assets (Langsung Jalan Tanpa Download Berat)**
+   * Karakter stickman lentur (*squash & stretch*), mata ekspresif yang menoleh, sarung tinju, dan arena digambar secara prosedural.
+   * Efek suara arcade disintesis langsung lewat C# via Unity Audio API (bebas dependensi file `.mp3` eksternal).
+3. **Turnamen 5 Ronde & Podium Juara**
+   * Putaran 5 mini-game secara acak dengan perolehan bintang (+3 Bintang per kemenangan).
+   * Layar podium juara di akhir turnamen.
 4. **Auto-Bootstrap System**
-   - Anda cukup membuka Unity dan menekan tombol **Play ▶** di scene mana saja; script `GameBootstrap.cs` otomatis mengatur Kamera, Canvas UI, EventSystem, dan Manajer game!
+   * Cukup buka scene kosong di Unity dan tekan **Play ▶**, game langsung berjalan otomatis!
 
 ---
 
-## 🕹️ Daftar 5 Mini-Game
+## 🕹️ 5 Mini-Game Seru yang Tersedia
 
-| Mini-Game | Mode | Deskripsi & Mekanik |
-|---|---|---|
-| **1. Lava Arena Knockout** | Survival | Pemain berada di atas platform bundar yang perlahan menyusut. Gunakan tombol aksi untuk memukul dan mendorong musuh ke lava! |
-| **2. Tank Battle** | Survival | Kendalikan tank di dalam labirin. Tembakkan peluru yang bisa memantul di dinding hingga 3 kali untuk menghancurkan tank lawan dan kotak kayu! |
-| **3. Stickman Soccer** | Tim 2v2 | Sepak bola 2v2 (Tim Merah vs Tim Biru). Giring dan tendang bola ke gawang lawan dalam batas waktu 60 detik! |
-| **4. Color The Floor** | Skor Area | Berlari di atas ubin lantai untuk mewarnainya dengan warna karaktermu. Pemain dengan ubin terbanyak saat waktu habis menang! |
-| **5. Bomb Tag** | Hot Potato | Satu pemain memegang bom yang terus berdetik. Tabrak pemain lain untuk mengoper bom sebelum meledak di tanganmu! |
-
----
-
-## ⌨️ Skema Kontrol (1 Keyboard Bersama)
-
-| Pemain | Warna | Tombol Gerak | Tombol Aksi (Pukul / Tembak / Tendang) |
-|---|---|---|---|
-| **Player 1** | 🔴 Merah | `W` `A` `S` `D` | `Spasi` |
-| **Player 2** | 🔵 Biru | `Panah Atas` `Bawah` `Kiri` `Kanan` | `Enter` |
-| **Player 3** | 🟢 Hijau | `I` `J` `K` `L` | `U` |
-| **Player 4** | 🟡 Kuning | `Numpad 8` `4` `5` `6` | `Numpad +` |
+1. **Lava Arena Knockout (Sumo Lava):**
+   * Platform melayang perlahan menyusut ke tengah.
+   * Pukul dan dorong musuh keluar arena ke dalam lava panas!
+2. **Tank Battle (Peluru Pantul):**
+   * Pertempuran tank top-down di dalam labirin.
+   * Peluru bisa memantul 3 kali di dinding. Satu tembakan langsung meledakkan tank lawan!
+3. **Stickman Soccer (Sepak Bola 2v2):**
+   * Pertandingan sepak bola mini 2v2 (Tim Merah vs Tim Biru).
+   * Giring, sleding, dan tendang bola ke gawang lawan dalam 60 detik!
+4. **Color The Floor (Cat Lantai):**
+   * Lari mewarnai ubin lantai arena dengan warna stickman Anda.
+   * Pemain dengan ubin terbanyak saat waktu habis dinobatkan sebagai pemenang!
+5. **Bomb Tag (Oper Bom Waktu):**
+   * Satu pemain memegang bom yang terus berdetik semakin cepat.
+   * Tabrak lawan untuk mengoper bom tersebut sebelum meledak di tangan Anda!
 
 ---
 
-## 🚀 Cara Menjalankan di Unity Editor
+## 🚀 Build Otomatis File `.apk` di GitHub Actions
 
-1. Buka **Unity Hub**.
-2. Klik tombol **Add** -> Pilih folder `stickman-party-unity`.
-3. Buka proyek (Direkomendasikan versi **Unity 2021.3 LTS**, **Unity 2022.3 LTS**, atau **Unity 6**).
-4. Tekan tombol **Play ▶** di editor. 
-5. Pilih jumlah pemain (1P, 2P, 3P, atau 4P) pada menu utama dan nikmati permainannya!
+Workflow GitHub Actions sudah siap di [`.github/workflows/unity-build.yml`](file:///root/stickman-party-unity/.github/workflows/unity-build.yml). Workflow ini secara otomatis mengompilasi file **Android `.apk`** yang bisa langsung di-install di HP Anda.
 
----
-
-## ⚙️ Build Otomatis di GitHub Actions
-
-File alur kerja sudah tersedia di `.github/workflows/unity-build.yml`. Alur kerja ini menggunakan [GameCI](https://game.ci/) untuk secara otomatis mengompilasi:
-* **StandaloneWindows64** (`.exe`)
-* **WebGL** (Bisa dimainkan langsung di web)
-* **StandaloneLinux64**
-
-### Menyiapkan Secret Repository di GitHub:
-Masuk ke **Settings > Secrets and variables > Actions** di repositori GitHub Anda dan tambahkan:
-* `UNITY_LICENSE`: Isi dengan lisensi file Unity Anda (`.ulf`) atau XML lisensi.
-* `UNITY_EMAIL`: Email akun Unity ID Anda.
-* `UNITY_PASSWORD`: Kata sandi akun Unity ID Anda.
-
-Setiap kali Anda melakukan `git push` ke branch `main`, GitHub Actions akan otomatis membuat build dan mengunggahnya sebagai artefak siap unduh!
+### Konfigurasi Rahasia (Secrets) di GitHub:
+1. Masuk ke **Settings > Secrets and variables > Actions** di repositori GitHub Anda.
+2. Tambahkan 3 variabel rahasia:
+   * `UNITY_LICENSE`: Isi dengan teks lisensi Unity Anda (`.ulf` / XML).
+   * `UNITY_EMAIL`: Email akun Unity ID Anda.
+   * `UNITY_PASSWORD`: Kata sandi akun Unity ID Anda.
+3. Setiap kali Anda melakukan `git push`, GitHub Actions akan otomatis membuat file `.apk` dan menyediakannya di tab **Actions > Artifacts** untuk langsung diunduh ke HP Android.

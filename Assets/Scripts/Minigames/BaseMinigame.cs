@@ -72,6 +72,7 @@ namespace StickmanParty.Minigames
             }
 
             IsRunning = true;
+            UIManager.Instance?.ShowTouchControls(activePlayers);
             yield return new WaitForSeconds(0.5f);
             UIManager.Instance?.HideCountdown();
         }
@@ -134,6 +135,7 @@ namespace StickmanParty.Minigames
                 p.OnEliminated -= HandlePlayerElimination;
             }
 
+            UIManager.Instance?.HideTouchControls();
             AudioManager.Instance?.PlaySound(SoundType.StarWin);
 
             if (winnerPlayerIndex >= 0)

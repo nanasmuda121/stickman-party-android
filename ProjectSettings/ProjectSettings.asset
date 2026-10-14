@@ -12,6 +12,10 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: IndieStudio
   productName: StickmanPartyClone
+  bundleVersion: 1.0.0
+  applicationIdentifier:
+    Android: com.indie.stickmanpartyclone
+    Standalone: com.indie.stickmanpartyclone
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.137, g: 0.121, b: 0.125, a: 1}
@@ -21,3 +25,4 @@ PlayerSettings:
   defaultScreenHeightWeb: 720
   m_RenderingPath: 1
   m_ActiveColorSpace: 1
+  AndroidTargetArchitectures: 3

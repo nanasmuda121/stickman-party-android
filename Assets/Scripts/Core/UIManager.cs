@@ -20,6 +20,8 @@ namespace StickmanParty.Core
         private GameObject mainMenuPanel;
         private GameObject scoreboardPanel;
         private GameObject podiumPanel;
+        private List<GameObject> touchControlRoots = new List<GameObject>();
+        private List<VirtualJoystick> activeJoysticks = new List<VirtualJoystick>();
 
         private void Awake()
         {
@@ -63,6 +65,9 @@ namespace StickmanParty.Core
 
             // 6. Podium Panel
             BuildPodiumPanel(canvasObj.transform);
+
+            // 7. Mobile 4-Corner Touch Controls (Android / Tablet)
+            BuildMobileTouchControls(canvasObj.transform);
         }
 
         private void BuildMainMenu(Transform parent)
@@ -178,6 +183,111 @@ namespace StickmanParty.Core
                     txt.color = p.playerColor;
                 }
             }
+        }
+
+        public void ShowTouchControls(List<StickmanController> players)
+        {
+            for (int i = 0; i < touchControlRoots.Count; i++)
+            {
+                if (i < players.Count && !players[i].Config.isBot)
+                {
+                    touchControlRoots[i].SetActive(true);
+                    players[i].Joystick = activeJoysticks[i];
+                }
+                else
+                {
+                    touchControlRoots[i].SetActive(false);
+                }
+            }
+        }
+
+        public void HideTouchControls()
+        {
+            foreach (var root in touchControlRoots)
+            {
+                if (root != null) root.SetActive(false);
+            }
+        }
+        #endregion
+
+        #region Mobile Touch Builder
+        private void BuildMobileTouchControls(Transform parent)
+        {
+            touchControlRoots.Clear();
+            activeJoysticks.Clear();
+
+            // Corner 0: Bottom-Left (Player 1 Red)
+            CreateCornerTouch(parent, 0, new Vector2(0f, 0f), new Vector2(100f, 100f), new Vector2(230f, 100f), new Color(1f, 0.22f, 0.22f));
+
+            // Corner 1: Top-Right (Player 2 Blue)
+            CreateCornerTouch(parent, 1, new Vector2(1f, 1f), new Vector2(-100f, -100f), new Vector2(-230f, -100f), new Color(0.18f, 0.52f, 1f));
+
+            // Corner 2: Bottom-Right (Player 3 Green)
+            CreateCornerTouch(parent, 2, new Vector2(1f, 0f), new Vector2(-100f, 100f), new Vector2(-230f, 100f), new Color(0.2f, 0.85f, 0.35f));
+
+            // Corner 3: Top-Left (Player 4 Yellow)
+            CreateCornerTouch(parent, 3, new Vector2(0f, 1f), new Vector2(100f, -100f), new Vector2(230f, -100f), new Color(1f, 0.82f, 0.1f));
+
+            HideTouchControls();
+        }
+
+        private void CreateCornerTouch(Transform parent, int playerIndex, Vector2 anchor, Vector2 joystickPos, Vector2 actionPos, Color color)
+        {
+            GameObject cornerRoot = new GameObject($"TouchControls_P{playerIndex + 1}");
+            cornerRoot.transform.SetParent(parent, false);
+
+            var rootRect = cornerRoot.AddComponent<RectTransform>();
+            rootRect.anchorMin = anchor;
+            rootRect.anchorMax = anchor;
+            rootRect.pivot = anchor;
+            rootRect.anchoredPosition = Vector2.zero;
+            rootRect.sizeDelta = new Vector2(320, 200);
+
+            // Joystick
+            GameObject joyObj = new GameObject("Joystick");
+            joyObj.transform.SetParent(cornerRoot.transform, false);
+            var joyRect = joyObj.AddComponent<RectTransform>();
+            joyRect.anchorMin = anchor;
+            joyRect.anchorMax = anchor;
+            joyRect.pivot = new Vector2(0.5f, 0.5f);
+            joyRect.anchoredPosition = joystickPos;
+            joyRect.sizeDelta = new Vector2(120, 120);
+
+            var joy = joyObj.AddComponent<VirtualJoystick>();
+            joy.Setup(color);
+            activeJoysticks.Add(joy);
+
+            // Action Button
+            GameObject actBtnObj = new GameObject("ActionButton");
+            actBtnObj.transform.SetParent(cornerRoot.transform, false);
+            var actRect = actBtnObj.AddComponent<RectTransform>();
+            actRect.anchorMin = anchor;
+            actRect.anchorMax = anchor;
+            actRect.pivot = new Vector2(0.5f, 0.5f);
+            actRect.anchoredPosition = actionPos;
+            actRect.sizeDelta = new Vector2(80, 80);
+
+            var actImg = actBtnObj.AddComponent<Image>();
+            actImg.color = new Color(color.r, color.g, color.b, 0.75f);
+
+            var actBtn = actBtnObj.AddComponent<Button>();
+            actBtn.targetGraphic = actImg;
+            actBtn.onClick.AddListener(() =>
+            {
+                var allPlayers = FindObjectsOfType<StickmanController>();
+                foreach (var p in allPlayers)
+                {
+                    if (p.Config != null && (int)p.Config.slot == playerIndex)
+                    {
+                        p.TryPerformAction();
+                        break;
+                    }
+                }
+            });
+
+            CreateText(actBtnObj.transform, "Label", "ACTION", 16, TextAnchor.MiddleCenter, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero);
+
+            touchControlRoots.Add(cornerRoot);
         }
         #endregion
 

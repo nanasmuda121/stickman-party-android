@@ -21,6 +21,7 @@ namespace StickmanParty.Player
         public bool IsAlive { get; set; } = true;
         public bool IsStunned => stunTimer > 0f;
         public bool CanMove { get; set; } = true;
+        public VirtualJoystick Joystick { get; set; }
 
         private Vector2 moveInput = Vector2.zero;
         private Vector2 facingDirection = Vector2.up;
@@ -79,16 +80,26 @@ namespace StickmanParty.Player
                 moveInput = Vector2.zero;
             }
 
-            // Read Human Keyboard Inputs
+            // Read Human Keyboard & Mobile Touch Inputs
             if (Config != null && !Config.isBot && CanMove && !IsStunned)
             {
                 float h = 0f;
                 float v = 0f;
 
-                if (Input.GetKey(Config.keyLeft)) h -= 1f;
-                if (Input.GetKey(Config.keyRight)) h += 1f;
-                if (Input.GetKey(Config.keyDown)) v -= 1f;
-                if (Input.GetKey(Config.keyUp)) v += 1f;
+                // 1. Mobile Virtual Joystick
+                if (Joystick != null && Joystick.InputVector.sqrMagnitude > 0.01f)
+                {
+                    h = Joystick.InputVector.x;
+                    v = Joystick.InputVector.y;
+                }
+                else
+                {
+                    // 2. Keyboard fallback
+                    if (Input.GetKey(Config.keyLeft)) h -= 1f;
+                    if (Input.GetKey(Config.keyRight)) h += 1f;
+                    if (Input.GetKey(Config.keyDown)) v -= 1f;
+                    if (Input.GetKey(Config.keyUp)) v += 1f;
+                }
 
                 SetMoveInput(new Vector2(h, v));
 

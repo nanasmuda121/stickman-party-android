@@ -34,7 +34,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
-          androidAppBundle: false # Produces .apk directly for easy sideloading
+          androidExportType: androidPackage # Produces .apk directly for sideloading
           androidTargetSdkVersion: AndroidApiLevel33
           buildName: StickmanParty
           buildsPath: build/Android
